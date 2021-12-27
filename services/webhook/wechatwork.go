@@ -127,7 +127,7 @@ func (f *WechatworkPayload) Issue(p *api.IssuePayload) (api.Payloader, error) {
 func (f *WechatworkPayload) IssueComment(p *api.IssueCommentPayload) (api.Payloader, error) {
 	text, issueTitle, _ := getIssueCommentPayloadInfo(p, noneLinkFormatter, true)
 	var content string
-	content += fmt.Sprintf(" ><font color=\"info\">%s</font>\n >%s \n ><font color=\"warning\">%s</font> \n [%s](%s)", text, p.Comment.Body, issueTitle, p.Comment.HTMLURL, p.Comment.HTMLURL+"#target=out")
+	content += fmt.Sprintf(" ><font color=\"info\">%s</font>\n >%s \n ><font color=\"warning\">%s</font> \n [%s](%s)", text, p.Comment.Body, issueTitle, p.Comment.HTMLURL, p.Comment.HTMLURL+"&target=out")
 
 	return newWechatworkMarkdownPayload(content), nil
 
