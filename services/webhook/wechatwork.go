@@ -101,7 +101,7 @@ func (f *WechatworkPayload) Push(p *api.PushPayload) (api.Payloader, error) {
 		}
 
 		message := strings.ReplaceAll(commit.Message, "\n\n", "\r\n")
-		text += fmt.Sprintf(" > [%s](%s) \r\n ><font color=\"info\">%s</font> \n ><font color=\"warning\">%s</font>", commit.ID[:7], commit.URL,
+		text += fmt.Sprintf(" > [%s](%s) \r\n ><font color=\"info\">%s</font> \n ><font color=\"warning\">%s</font>", commit.ID[:7], commit.URL+"#target=out",
 			message, authorName)
 
 		// add linebreak to each commit but the last
@@ -117,7 +117,7 @@ func (f *WechatworkPayload) Push(p *api.PushPayload) (api.Payloader, error) {
 func (f *WechatworkPayload) Issue(p *api.IssuePayload) (api.Payloader, error) {
 	text, issueTitle, attachmentText, _ := getIssuesPayloadInfo(p, noneLinkFormatter, true)
 	var content string
-	content += fmt.Sprintf(" ><font color=\"info\">%s</font>\n >%s \n ><font color=\"warning\"> %s</font> \n [%s](%s)", text, attachmentText, issueTitle, p.Issue.HTMLURL, p.Issue.HTMLURL)
+	content += fmt.Sprintf(" ><font color=\"info\">%s</font>\n >%s \n ><font color=\"warning\"> %s</font> \n [%s](%s)", text, attachmentText, issueTitle, p.Issue.HTMLURL, p.Issue.HTMLURL+"#target=out")
 
 	return newWechatworkMarkdownPayload(content), nil
 
@@ -127,7 +127,7 @@ func (f *WechatworkPayload) Issue(p *api.IssuePayload) (api.Payloader, error) {
 func (f *WechatworkPayload) IssueComment(p *api.IssueCommentPayload) (api.Payloader, error) {
 	text, issueTitle, _ := getIssueCommentPayloadInfo(p, noneLinkFormatter, true)
 	var content string
-	content += fmt.Sprintf(" ><font color=\"info\">%s</font>\n >%s \n ><font color=\"warning\">%s</font> \n [%s](%s)", text, p.Comment.Body, issueTitle, p.Comment.HTMLURL, p.Comment.HTMLURL)
+	content += fmt.Sprintf(" ><font color=\"info\">%s</font>\n >%s \n ><font color=\"warning\">%s</font> \n [%s](%s)", text, p.Comment.Body, issueTitle, p.Comment.HTMLURL, p.Comment.HTMLURL+"#target=out")
 
 	return newWechatworkMarkdownPayload(content), nil
 
