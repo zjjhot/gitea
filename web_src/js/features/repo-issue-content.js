@@ -19,7 +19,8 @@ function showContentHistoryDetail(issueBaseUrl, commentId, historyId, itemTitleH
     <div class="ui dropdown right dialog-header-options" style="display: none; margin-right: 50px;">
       ${i18nTextOptions} <i class="dropdown icon"></i>
       <div class="menu">
-        <div class="item red text" data-option-item="delete">${i18nTextDeleteFromHistory}</div>
+      <!-- hide delete issue comment history button -->
+        <div class="item red text" data-option-item="delete" style="display: none">${i18nTextDeleteFromHistory}</div>
       </div>
     </div>
   </div>
