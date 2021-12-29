@@ -19,7 +19,8 @@
 			<div class="divider"></div>
 			<div class="item context edit-content">{{.ctx.i18n.Tr "repo.issues.context.edit"}}</div>
 			{{if .delete}}
-				<div class="item context delete-comment" data-comment-id={{.item.HashTag}} data-url="{{.ctx.RepoLink}}/comments/{{.item.ID}}/delete" data-locale="{{.ctx.i18n.Tr "repo.issues.delete_comment_confirm"}}">{{.ctx.i18n.Tr "repo.issues.context.delete"}}</div>
+			<!-- Hide delete comment button -->
+				<div class="item context delete-comment" style="display: none" data-comment-id={{.item.HashTag}} data-url="{{.ctx.RepoLink}}/comments/{{.item.ID}}/delete" data-locale="{{.ctx.i18n.Tr "repo.issues.delete_comment_confirm"}}">{{.ctx.i18n.Tr "repo.issues.context.delete"}}</div>
 			{{end}}
 		{{end}}
 	</div>
