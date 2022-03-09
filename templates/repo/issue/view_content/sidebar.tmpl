@@ -645,7 +645,8 @@
 					</form>
 				</div>
 			</div>
-			<button class="fluid ui show-modal button negative mt-3" data-modal="#delete">
+			<!-- Hide delete issue button -->
+			<button class="fluid ui show-modal button negative mt-3" style="display: none" data-modal="#delete">
 				{{svg "octicon-trash"}}
 				{{.i18n.Tr "repo.issues.delete"}}
 			</button>
