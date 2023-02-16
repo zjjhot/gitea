@@ -20,7 +20,6 @@
 			<div class="item context edit-content">{{.ctx.locale.Tr "repo.issues.context.edit"}}</div>
 			{{if .delete}}
 			<!-- Hide issue comment delete button -->
-
 				<div class="item context delete-comment" style="display: none" data-comment-id={{.item.HashTag}} data-url="{{.ctx.RepoLink}}/comments/{{.item.ID}}/delete" data-locale="{{.ctx.locale.Tr "repo.issues.delete_comment_confirm"}}">{{.ctx.locale.Tr "repo.issues.context.delete"}}</div>
 			{{end}}
 		{{end}}

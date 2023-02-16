@@ -19,7 +19,7 @@ function showContentHistoryDetail(issueBaseUrl, commentId, historyId, itemTitleH
     <div class="ui dropdown dialog-header-options gt-df gt-ac gt-mr-5 hide">
       ${i18nTextOptions}${svg('octicon-triangle-down', 14, 'dropdown icon')}
       <div class="menu">
-      <!-- hide issue comment history delete button -->
+        <!-- hide issue comment history delete button -->
         <div class="item red text" style="display: none" data-option-item="delete">${i18nTextDeleteFromHistory}</div>
       </div>
     </div>
