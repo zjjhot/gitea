@@ -181,10 +181,12 @@
 						{{svg "octicon-tools"}}
 						{{.locale.Tr "your_settings"}}<!-- Your settings -->
 					</a>
+					<div style="display:none">
 					<a class="item" target="_blank" rel="noopener noreferrer" href="https://docs.gitea.io">
 						{{svg "octicon-question"}}
 						{{.locale.Tr "help"}}<!-- Help -->
 					</a>
+					</div>
 					{{if .IsAdmin}}
 						<div class="divider"></div>
 
@@ -203,7 +205,9 @@
 			</div><!-- end dropdown avatar menu -->
 		</div><!-- end signed user right menu -->
 	{{else}}
+		<div style="display:none">
 		<a class="item" target="_blank" rel="noopener noreferrer" href="https://docs.gitea.io">{{.locale.Tr "help"}}</a>
+		</div>
 		<div class="right stackable menu">
 			{{if .ShowRegistrationButton}}
 				<a class="item{{if .PageIsSignUp}} active{{end}}" href="{{AppSubUrl}}/user/sign_up">

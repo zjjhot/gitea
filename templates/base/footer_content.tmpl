@@ -1,7 +1,8 @@
 <footer role="group" aria-label="{{.locale.Tr "aria.footer"}}">
 	<div class="ui container">
 		<div class="ui left" role="contentinfo" aria-label="{{.locale.Tr "aria.footer.software"}}">
-			<a target="_blank" rel="noopener noreferrer" href="https://gitea.io">{{.locale.Tr "powered_by" "Gitea"}}</a>
+			<img style="width:30px;height:12px;" src="{{AssetUrlPrefix}}/img/067.png">
+			上海垣沁信息科技有限公司
 			{{if (or .ShowFooterVersion .PageIsAdmin)}}
 				{{.locale.Tr "version"}}:
 				{{if .IsAdmin}}
@@ -28,8 +29,10 @@
 					{{end}}
 				</div>
 			</div>
+			<!--
 			<a href="{{AssetUrlPrefix}}/js/licenses.txt">{{.locale.Tr "licenses"}}</a>
 			{{if .EnableSwagger}}<a href="{{AppSubUrl}}/api/swagger">API</a>{{end}}
+			-->
 			{{template "custom/extra_links_footer" .}}
 		</div>
 	</div>
