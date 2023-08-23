@@ -1296,6 +1296,7 @@ func GetOrderByName() string {
 }
 
 // user customer funtions
+/*
 func contain(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {
@@ -1304,8 +1305,10 @@ func contain(s []string, e string) bool {
 	}
 	return false
 }
+*/
 
 func (u *User) ThemeContainsPark() bool {
 	ars := []string{"plex", "aquamarine", "dark", "dracula", "hotline", "organizr", "space-gray", "hotpink", "onedark", "overseerr", "nord"}
-	return contain(ars, u.Theme)
+	//return contain(ars, u.Theme)
+	return util.SliceContains(ars, u.Theme)
 }
