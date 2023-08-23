@@ -1294,3 +1294,18 @@ func GetOrderByName() string {
 	}
 	return "name"
 }
+
+// user customer funtions
+func contain(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
+func (u *User) ThemeContainsPark() bool {
+	ars := []string{"plex", "aquamarine", "dark", "dracula", "hotline", "organizr", "space-gray", "hotpink", "onedark", "overseerr", "nord"}
+	return contain(ars, u.Theme)
+}
