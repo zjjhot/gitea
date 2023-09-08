@@ -1310,5 +1310,5 @@ func contain(s []string, e string) bool {
 func (u *User) ThemeContainsPark() bool {
 	ars := []string{"plex", "aquamarine", "dark", "dracula", "hotline", "organizr", "space-gray", "hotpink", "onedark", "overseerr", "nord"}
 	//return contain(ars, u.Theme)
-	return util.SliceContains(ars, u.Theme)
+	return util.SliceContainsString(ars, u.Theme)
 }
