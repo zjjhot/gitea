@@ -47,9 +47,11 @@
 
 		{{template "custom/extra_links" .}}
 
-		{{if not .IsSigned}}
+		<div style="display:none">
+		{{if not .IsSigned}}	
 			<a class="item" target="_blank" rel="noopener noreferrer" href="https://docs.gitea.com">{{ctx.Locale.Tr "help"}}</a>
 		{{end}}
+		</div>
 	</div>
 
 	<!-- the full dropdown menus -->
