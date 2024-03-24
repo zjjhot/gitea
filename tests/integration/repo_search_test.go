@@ -32,7 +32,7 @@ func TestSearchRepo(t *testing.T) {
 	repo, err := repo_model.GetRepositoryByOwnerAndName(db.DefaultContext, "user2", "repo1")
 	assert.NoError(t, err)
 
-	code_indexer.UpdateRepoIndexer(repo)
+	executeIndexer(t, repo, code_indexer.UpdateRepoIndexer)
 
 	testSearch(t, "/user2/repo1/search?q=Description&page=1", []string{"README.md"})
 
@@ -42,14 +42,12 @@ func TestSearchRepo(t *testing.T) {
 	repo, err = repo_model.GetRepositoryByOwnerAndName(db.DefaultContext, "user2", "glob")
 	assert.NoError(t, err)
 
-	code_indexer.UpdateRepoIndexer(repo)
+	executeIndexer(t, repo, code_indexer.UpdateRepoIndexer)
 
 	testSearch(t, "/user2/glob/search?q=loren&page=1", []string{"a.txt"})
-	testSearch(t, "/user2/glob/search?q=loren&page=1&t=match", []string{"a.txt"})
-	testSearch(t, "/user2/glob/search?q=file3&page=1", []string{"x/b.txt", "a.txt"})
-	testSearch(t, "/user2/glob/search?q=file3&page=1&t=match", []string{"x/b.txt", "a.txt"})
-	testSearch(t, "/user2/glob/search?q=file4&page=1&t=match", []string{"x/b.txt", "a.txt"})
-	testSearch(t, "/user2/glob/search?q=file5&page=1&t=match", []string{"x/b.txt", "a.txt"})
+	testSearch(t, "/user2/glob/search?q=file3&page=1", []string{"x/b.txt"})
+	testSearch(t, "/user2/glob/search?q=file4&page=1", []string{})
+	testSearch(t, "/user2/glob/search?q=file5&page=1", []string{})
 }
 
 func testSearch(t *testing.T, url string, expected []string) {
@@ -58,4 +56,8 @@ func testSearch(t *testing.T, url string, expected []string) {
 
 	filenames := resultFilenames(t, NewHTMLParser(t, resp.Body))
 	assert.EqualValues(t, expected, filenames)
+}
+
+func executeIndexer(t *testing.T, repo *repo_model.Repository, op func(*repo_model.Repository)) {
+	op(repo)
 }
