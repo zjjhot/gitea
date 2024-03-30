@@ -1233,6 +1233,27 @@ func GetOrderByName() string {
 	return "name"
 }
 
+
+
+// IsFeatureDisabledWithLoginType checks if a user feature is disabled, taking into account the login type of the
+// user if applicable
+func IsFeatureDisabledWithLoginType(user *User, feature string) bool {
+	// NOTE: in the long run it may be better to check the ExternalLoginUser table rather than user.LoginType
+	return (user != nil && user.LoginType > auth.Plain && setting.Admin.ExternalUserDisableFeatures.Contains(feature)) ||
+		setting.Admin.UserDisabledFeatures.Contains(feature)
+}
+
+// DisabledFeaturesWithLoginType returns the set of user features disabled, taking into account the login type
+// of the user if applicable
+func DisabledFeaturesWithLoginType(user *User) *container.Set[string] {
+	// NOTE: in the long run it may be better to check the ExternalLoginUser table rather than user.LoginType
+	if user != nil && user.LoginType > auth.Plain {
+		return &setting.Admin.ExternalUserDisableFeatures
+	}
+	return &setting.Admin.UserDisabledFeatures
+}
+
+
 // user customer funtions
 /*
 func contain(s []string, e string) bool {
