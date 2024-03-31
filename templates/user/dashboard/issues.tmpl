@@ -33,7 +33,7 @@
 						<strong>{{CountFmt .IssueStats.MentionCount}}</strong>
 					</a>
 					<div class="divider"></div>
-					<a class="{{if not $.RepoIDs}}active{{end}} repo name item" href="{{$.Link}}?type={{$.ViewType}}&sort={{$.SortType}}&state={{$.State}}&q={{$.Keyword}}">
+					<a class="{{if not $.RepoIDs}}active{{end}} repo name item" href="{{$.Link}}?type={{$.ViewType}}&repos=[{{range $.RepoIDs}}{{.}}%2C{{end}}]&sort={{$.SortType}}&state={{$.State}}&q={{$.Keyword}}">
 						<span class="text truncate">{{ctx.Locale.Tr "all"}}</span>
 						<span>{{CountFmt .TotalIssueCount}}</span>
 					</a>
