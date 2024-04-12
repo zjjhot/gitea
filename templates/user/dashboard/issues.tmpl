@@ -33,13 +33,13 @@
 						<strong>{{CountFmt .IssueStats.MentionCount}}</strong>
 					</a>
 					<div class="divider"></div>
-					<a class="{{if not $.RepoIDs}}active{{end}} repo name item" href="{{$.Link}}?type={{$.ViewType}}&sort={{$.SortType}}&state={{$.State}}&q={{$.Keyword}}">
+					<a class="{{if not $.RepoIDs}}active{{end}} repo name item" href="?type={{$.ViewType}}&sort={{$.SortType}}&state={{$.State}}&q={{$.Keyword}}">
 						<span class="text truncate">{{ctx.Locale.Tr "all"}}</span>
 						<span>{{CountFmt .TotalIssueCount}}</span>
 					</a>
 					{{range .Repos}}
 						{{with $Repo := .}}
-							<a class="{{range $.RepoIDs}}{{if eq . $Repo.ID}}active{{end}}{{end}} repo name item" href="{{$.Link}}?type={{$.ViewType}}&repos=[
+							<a class="{{range $.RepoIDs}}{{if eq . $Repo.ID}}active{{end}}{{end}} repo name item" href="?type={{$.ViewType}}&repos=[
 									{{- with $include := true -}}
 										{{- range $.RepoIDs -}}
 											{{- if eq . $Repo.ID -}}
