@@ -450,6 +450,8 @@ func buildIssueOverview(ctx *context.Context, unitType unit.Type) {
 		User:       ctx.Doer,
 	}
 
+	isFuzzy := ctx.FormBool("fuzzy")
+
 	// Search all repositories which
 	//
 	// As user:
@@ -561,7 +563,9 @@ func buildIssueOverview(ctx *context.Context, unitType unit.Type) {
 	// USING FINAL STATE OF opts FOR A QUERY.
 	var issues issues_model.IssueList
 	{
-		issueIDs, _, err := issue_indexer.SearchIssues(ctx, issue_indexer.ToSearchOptions(keyword, opts))
+		issueIDs, _, err := issue_indexer.SearchIssues(ctx, issue_indexer.ToSearchOptions(keyword, opts).Copy(
+			func(o *issue_indexer.SearchOptions) { o.IsFuzzyKeyword = isFuzzy },
+		))
 		if err != nil {
 			ctx.ServerError("issueIDsFromSearch", err)
 			return
@@ -617,7 +621,9 @@ func buildIssueOverview(ctx *context.Context, unitType unit.Type) {
 	// -------------------------------
 	// Fill stats to post to ctx.Data.
 	// -------------------------------
-	issueStats, err := getUserIssueStats(ctx, filterMode, issue_indexer.ToSearchOptions(keyword, opts), ctx.Doer.ID)
+	issueStats, err := getUserIssueStats(ctx, ctxUser, filterMode, issue_indexer.ToSearchOptions(keyword, opts).Copy(
+		func(o *issue_indexer.SearchOptions) { o.IsFuzzyKeyword = isFuzzy },
+	))
 	if err != nil {
 		ctx.ServerError("getUserIssueStats", err)
 		return
@@ -693,6 +699,7 @@ func buildIssueOverview(ctx *context.Context, unitType unit.Type) {
 	ctx.Data["RepoIDs"] = selectedRepoIDs
 	ctx.Data["IsShowClosed"] = isShowClosed
 	ctx.Data["SelectLabels"] = selectedLabels
+	ctx.Data["IsFuzzy"] = isFuzzy
 
 	if isShowClosed {
 		ctx.Data["State"] = "closed"
@@ -712,6 +719,7 @@ func buildIssueOverview(ctx *context.Context, unitType unit.Type) {
 	pager.AddParamString("sort", sortType)
 	pager.AddParamString("state", fmt.Sprint(ctx.Data["State"]))
 	pager.AddParamString("labels", selectedLabels)
+	pager.AddParamString("fuzzy", fmt.Sprintf("%v", isFuzzy))
 	ctx.Data["Page"] = pager
 
 	ctx.HTML(http.StatusOK, tplIssues)
