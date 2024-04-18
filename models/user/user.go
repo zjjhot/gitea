@@ -1233,8 +1233,6 @@ func GetOrderByName() string {
 	return "name"
 }
 
-
-
 // IsFeatureDisabledWithLoginType checks if a user feature is disabled, taking into account the login type of the
 // user if applicable
 func IsFeatureDisabledWithLoginType(user *User, feature string) bool {
@@ -1252,7 +1250,6 @@ func DisabledFeaturesWithLoginType(user *User) *container.Set[string] {
 	}
 	return &setting.Admin.UserDisabledFeatures
 }
-
 
 // user customer funtions
 /*
