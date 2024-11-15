@@ -258,6 +258,7 @@ func prepareUserProfileTabData(ctx *context.Context, showPrivate bool, profileDb
 					Base:       profileDbRepo.Link(),
 					BranchPath: path.Join("branch", util.PathEscapeSegments(profileDbRepo.DefaultBranch)),
 				},
+				Metas: map[string]string{"mode": "document"},
 			}, bytes); err != nil {
 				log.Error("failed to RenderString: %v", err)
 			} else {

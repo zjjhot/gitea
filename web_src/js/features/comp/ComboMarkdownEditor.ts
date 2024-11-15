@@ -74,6 +74,7 @@ export class ComboMarkdownEditor {
   previewUrl: string;
   previewContext: string;
   previewMode: string;
+  previewWiki: boolean;
 
   constructor(container, options = {}) {
     container._giteaComboMarkdownEditor = this;
@@ -212,11 +213,13 @@ export class ComboMarkdownEditor {
     this.previewUrl = this.tabPreviewer.getAttribute('data-preview-url');
     this.previewContext = this.tabPreviewer.getAttribute('data-preview-context');
     this.previewMode = this.options.previewMode ?? 'comment';
+    this.previewWiki = this.options.previewWiki ?? false;
     this.tabPreviewer.addEventListener('click', async () => {
       const formData = new FormData();
       formData.append('mode', this.previewMode);
       formData.append('context', this.previewContext);
       formData.append('text', this.value());
+      formData.append('wiki', String(this.previewWiki));
       const response = await POST(this.previewUrl, {data: formData});
       const data = await response.text();
       renderPreviewPanelContent($(panelPreviewer), data);

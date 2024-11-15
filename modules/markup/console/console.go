@@ -8,6 +8,7 @@ import (
 	"io"
 	"path/filepath"
 	"regexp"
+	"strings"
 
 	"code.gitea.io/gitea/modules/markup"
 	"code.gitea.io/gitea/modules/setting"
@@ -15,6 +16,9 @@ import (
 	trend "github.com/buildkite/terminal-to-html/v3"
 	"github.com/go-enry/go-enry/v2"
 )
+
+// MarkupName describes markup's name
+var MarkupName = "console"
 
 func init() {
 	markup.RegisterRenderer(Renderer{})
@@ -25,7 +29,7 @@ type Renderer struct{}
 
 // Name implements markup.Renderer
 func (Renderer) Name() string {
-	return "console"
+	return MarkupName
 }
 
 // Extensions implements markup.Renderer
@@ -62,4 +66,21 @@ func (Renderer) Render(ctx *markup.RenderContext, input io.Reader, output io.Wri
 	buf = bytes.ReplaceAll(buf, []byte("\n"), []byte(`<br>`))
 	_, err = output.Write(buf)
 	return err
+}
+
+// Render renders terminal colors to HTML with all specific handling stuff.
+func Render(ctx *markup.RenderContext, input io.Reader, output io.Writer) error {
+	if ctx.Type == "" {
+		ctx.Type = MarkupName
+	}
+	return markup.Render(ctx, input, output)
+}
+
+// RenderString renders terminal colors in string to HTML with all specific handling stuff and return string
+func RenderString(ctx *markup.RenderContext, content string) (string, error) {
+	var buf strings.Builder
+	if err := Render(ctx, strings.NewReader(content), &buf); err != nil {
+		return "", err
+	}
+	return buf.String(), nil
 }

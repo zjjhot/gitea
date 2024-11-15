@@ -257,7 +257,9 @@ func (Renderer) Render(ctx *markup.RenderContext, input io.Reader, output io.Wri
 
 // Render renders Markdown to HTML with all specific handling stuff.
 func Render(ctx *markup.RenderContext, input io.Reader, output io.Writer) error {
-	ctx.MarkupType = MarkupName
+	if ctx.Type == "" {
+		ctx.Type = MarkupName
+	}
 	return markup.Render(ctx, input, output)
 }
 

@@ -479,6 +479,7 @@ func (repo *Repository) ComposeMetas(ctx context.Context) map[string]string {
 		metas := map[string]string{
 			"user": repo.OwnerName,
 			"repo": repo.Name,
+			"mode": "comment",
 		}
 
 		unit, err := repo.GetUnit(ctx, unit.TypeExternalTracker)
@@ -520,6 +521,7 @@ func (repo *Repository) ComposeDocumentMetas(ctx context.Context) map[string]str
 		for k, v := range repo.ComposeMetas(ctx) {
 			metas[k] = v
 		}
+		metas["mode"] = "document"
 		repo.DocumentRenderingMetas = metas
 	}
 	return repo.DocumentRenderingMetas

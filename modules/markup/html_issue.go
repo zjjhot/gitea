@@ -67,8 +67,9 @@ func issueIndexPatternProcessor(ctx *RenderContext, node *html.Node) {
 		return
 	}
 
-	// crossLinkOnly if not comment and not wiki
-	crossLinkOnly := ctx.ContentMode != RenderContentAsTitle && ctx.ContentMode != RenderContentAsComment && ctx.ContentMode != RenderContentAsWiki
+	// FIXME: the use of "mode" is quite dirty and hacky, for example: what is a "document"? how should it be rendered?
+	// The "mode" approach should be refactored to some other more clear&reliable way.
+	crossLinkOnly := ctx.Metas["mode"] == "document" && !ctx.IsWiki
 
 	var (
 		found bool
