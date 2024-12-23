@@ -32,7 +32,7 @@ var (
 	// issueNumericPattern matches string that references to a numeric issue, e.g. #1287
 	issueNumericPattern = regexp.MustCompile(`(?:\s|^|\(|\[|\'|\")([#!][0-9]+)(?:\s|$|\)|\]|\'|\"|[:;,.?!]\s|[:;,.?!]$)`)
 	// issueAlphanumericPattern matches string that references to an alphanumeric issue, e.g. ABC-1234
-	issueAlphanumericPattern = regexp.MustCompile(`(?:\s|^|\(|\[|\"|\')([A-Z]{1,10}-[1-9][0-9]*)(?:\s|$|\)|\]|:|\.(\s|$)|\"|\')`)
+	issueAlphanumericPattern = regexp.MustCompile(`(?:\s|^|\(|\[|\"|\')([A-Z]{1,10}-[1-9][0-9]*)(?:\s|$|\)|\]|:|\.(\s|$)|\"|\'|,)`)
 	// crossReferenceIssueNumericPattern matches string that references a numeric issue in a different repository
 	// e.g. org/repo#12345
 	crossReferenceIssueNumericPattern = regexp.MustCompile(`(?:\s|^|\(|\[)([0-9a-zA-Z-_\.]+/[0-9a-zA-Z-_\.]+[#!][0-9]+)(?:\s|$|\)|\]|[:;,.?!]\s|[:;,.?!]$)`)
@@ -164,9 +164,9 @@ func newKeywords() {
 	})
 }
 
-func doNewKeywords(close, reopen []string) {
-	issueCloseKeywordsPat = makeKeywordsPat(close)
-	issueReopenKeywordsPat = makeKeywordsPat(reopen)
+func doNewKeywords(closeKeywords, reopenKeywords []string) {
+	issueCloseKeywordsPat = makeKeywordsPat(closeKeywords)
+	issueReopenKeywordsPat = makeKeywordsPat(reopenKeywords)
 }
 
 // getGiteaHostName returns a normalized string with the local host name, with no scheme or port information
