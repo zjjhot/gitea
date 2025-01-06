@@ -59,7 +59,7 @@ func InitSettings() {
 	_ = hash.Register("dummy", hash.NewDummyHasher)
 
 	setting.PasswordHashAlgo, _ = hash.SetDefaultPasswordHashAlgorithm("dummy")
-	setting.InitGiteaEnvVars()
+	setting.InitGiteaEnvVarsForTesting()
 }
 
 // TestOptions represents test options
