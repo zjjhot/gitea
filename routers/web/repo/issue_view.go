@@ -297,7 +297,7 @@ func ViewIssue(ctx *context.Context) {
 	issue, err := issues_model.GetIssueByIndex(ctx, ctx.Repo.Repository.ID, ctx.PathParamInt64("index"))
 	if err != nil {
 		if issues_model.IsErrIssueNotExist(err) {
-			ctx.NotFound("GetIssueByIndex", err)
+			ctx.NotFound(err)
 		} else {
 			ctx.ServerError("GetIssueByIndex", err)
 		}
@@ -543,7 +543,11 @@ func preparePullViewDeleteBranch(ctx *context.Context, issue *issues_model.Issue
 
 func prepareIssueViewSidebarPin(ctx *context.Context, issue *issues_model.Issue) {
 	var pinAllowed bool
-	if !issue.IsPinned() {
+	if err := issue.LoadPinOrder(ctx); err != nil {
+		ctx.ServerError("LoadPinOrder", err)
+		return
+	}
+	if issue.PinOrder == 0 {
 		var err error
 		pinAllowed, err = issues_model.IsNewPinAllowed(ctx, issue.RepoID, issue.IsPull)
 		if err != nil {
