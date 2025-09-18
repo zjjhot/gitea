@@ -1,5 +1,5 @@
 import {debounce} from 'throttle-debounce';
-import type {Promisable} from 'type-fest';
+import type {Promisable} from '../types.ts';
 import type $ from 'jquery';
 import {isInFrontendUnitTest} from './testhelper.ts';
 
@@ -284,28 +284,6 @@ export function isElemVisible(el: HTMLElement): boolean {
   if (!el) return false;
   // checking el.style.display is not necessary for browsers, but it is required by some tests with happy-dom because happy-dom doesn't really do layout
   return !el.classList.contains('tw-hidden') && (el.offsetWidth || el.offsetHeight || el.getClientRects().length) && el.style.display !== 'none';
-}
-
-/** replace selected text in a textarea while preserving editor history, e.g. CTRL-Z works after this */
-export function replaceTextareaSelection(textarea: HTMLTextAreaElement, text: string) {
-  const before = textarea.value.slice(0, textarea.selectionStart ?? undefined);
-  const after = textarea.value.slice(textarea.selectionEnd ?? undefined);
-  let success = false;
-
-  textarea.contentEditable = 'true';
-  try {
-    success = document.execCommand('insertText', false, text); // eslint-disable-line @typescript-eslint/no-deprecated
-  } catch {} // ignore the error if execCommand is not supported or failed
-  textarea.contentEditable = 'false';
-
-  if (success && !textarea.value.slice(0, textarea.selectionStart ?? undefined).endsWith(text)) {
-    success = false;
-  }
-
-  if (!success) {
-    textarea.value = `${before}${text}${after}`;
-    textarea.dispatchEvent(new CustomEvent('change', {bubbles: true, cancelable: true}));
-  }
 }
 
 export function createElementFromHTML<T extends HTMLElement>(htmlString: string): T {
