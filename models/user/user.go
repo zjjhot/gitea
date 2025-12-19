@@ -1462,6 +1462,20 @@ func GetUserOrOrgIDByName(ctx context.Context, name string) (int64, error) {
 	return id, nil
 }
 
+// GetUserOrOrgByName returns the user or org by name
+func GetUserOrOrgByName(ctx context.Context, name string) (*User, error) {
+	var u User
+	has, err := db.GetEngine(ctx).Where("lower_name = ?", strings.ToLower(name)).Get(&u)
+	if err != nil {
+		return nil, err
+	} else if !has {
+		return nil, ErrUserNotExist{Name: name}
+	}
+	return &u, nil
+}
+
+
+
 // user customer funtions
 /*
 func contain(s []string, e string) bool {
@@ -1474,8 +1488,12 @@ func contain(s []string, e string) bool {
 }
 */
 
+
+// user customer funtions
 func (u *User) ThemeContainsPark() bool {
 	ars := []string{"plex", "aquamarine", "dark", "dracula", "hotline", "organizr", "space-gray", "hotpink", "onedark", "overseerr", "nord"}
 	//return contain(ars, u.Theme)
 	return util.SliceContainsString(ars, u.Theme)
 }
+
+
