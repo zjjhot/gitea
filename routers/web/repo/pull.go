@@ -32,6 +32,7 @@ import (
 	"code.gitea.io/gitea/modules/graceful"
 	issue_template "code.gitea.io/gitea/modules/issue/template"
 	"code.gitea.io/gitea/modules/log"
+	"code.gitea.io/gitea/modules/optional"
 	"code.gitea.io/gitea/modules/setting"
 	"code.gitea.io/gitea/modules/templates"
 	"code.gitea.io/gitea/modules/util"
@@ -1136,11 +1137,9 @@ func MergePullRequest(ctx *context.Context) {
 		message += "\n\n" + form.MergeMessageField
 	}
 
-	deleteBranchAfterMerge, err := pull_service.ShouldDeleteBranchAfterMerge(ctx, form.DeleteBranchAfterMerge, ctx.Repo.Repository, pr)
-	if err != nil {
-		ctx.ServerError("ShouldDeleteBranchAfterMerge", err)
-		return
-	}
+	// There is always a checkbox on the UI (the DeleteBranchAfterMerge is nil if the checkbox is not checked),
+	// just use the user's choice, don't use pull_service.ShouldDeleteBranchAfterMerge to decide
+	deleteBranchAfterMerge := optional.FromPtr(form.DeleteBranchAfterMerge).Value()
 
 	if form.MergeWhenChecksSucceed {
 		// delete all scheduled auto merges
@@ -1391,6 +1390,7 @@ func CompareAndPullRequestPost(ctx *context.Context) {
 		AssigneeIDs:     assigneeIDs,
 		Reviewers:       validateRet.Reviewers,
 		TeamReviewers:   validateRet.TeamReviewers,
+		ProjectID:       projectID,
 	}
 	if err := pull_service.NewPullRequest(ctx, prOpts); err != nil {
 		switch {
@@ -1440,15 +1440,6 @@ func CompareAndPullRequestPost(ctx *context.Context) {
 			ctx.ServerError("CompareAndPullRequest", err)
 		}
 		return
-	}
-
-	if projectID > 0 && ctx.Repo.CanWrite(unit.TypeProjects) {
-		if err := issues_model.IssueAssignOrRemoveProject(ctx, pullIssue, ctx.Doer, projectID, 0); err != nil {
-			if !errors.Is(err, util.ErrPermissionDenied) {
-				ctx.ServerError("IssueAssignOrRemoveProject", err)
-				return
-			}
-		}
 	}
 
 	log.Trace("Pull request created: %d/%d", repo.ID, pullIssue.ID)

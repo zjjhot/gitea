@@ -34,12 +34,10 @@
 		{{end}}
 
 		{{template "custom/extra_links" .}}
-		
-		<div style="display:none">
+
 		{{if not .IsSigned}}
-			<a class="item" target="_blank" rel="noopener noreferrer" href="https://docs.gitea.com">{{ctx.Locale.Tr "help"}}</a>
+			<a style="display: none" class="item" target="_blank" href="https://docs.gitea.com">{{ctx.Locale.Tr "help"}}</a>
 		{{end}}
-		</div>
 	</div>
 
 	<!-- the full dropdown menus -->
@@ -118,12 +116,10 @@
 						{{svg "octicon-tools"}}
 						{{ctx.Locale.Tr "your_settings"}}
 					</a>
-					<div style="display:none">
-					<a class="item" target="_blank" rel="noopener noreferrer" href="https://docs.gitea.com">
+					<a style="display: none" class="item" target="_blank" href="https://docs.gitea.com">
 						{{svg "octicon-question"}}
 						{{ctx.Locale.Tr "help"}}
 					</a>
-					</div>
 					{{if .IsAdmin}}
 					<div class="divider"></div>
 					<a class="{{if .PageIsAdmin}}active {{end}}item" href="{{AppSubUrl}}/-/admin">
@@ -145,7 +141,7 @@
 					<span class="tw-ml-1">{{ctx.Locale.Tr "register"}}</span>
 				</a>
 			{{end}}
-			<a class="item{{if .PageIsSignIn}} active{{end}}" rel="nofollow" href="{{AppSubUrl}}/user/login{{if not .PageIsSignIn}}?redirect_to={{.CurrentURL}}{{end}}">
+			<a class="item{{if .PageIsSignIn}} active{{end}}" rel="nofollow" href="{{AppSubUrl}}/user/login">
 				{{svg "octicon-sign-in"}}
 				<span class="tw-ml-1">{{ctx.Locale.Tr "sign_in"}}</span>
 			</a>
