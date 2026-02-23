@@ -107,6 +107,8 @@ function isLogElementInViewport(el: Element, {extraViewPortHeight}={extraViewPor
 type LocaleStorageOptions = {
   autoScroll: boolean;
   expandRunning: boolean;
+  actionsLogShowSeconds: boolean;
+  actionsLogShowTimestamps: boolean;
 };
 
 export default defineComponent({
@@ -135,8 +137,8 @@ export default defineComponent({
   },
 
   data() {
-    const defaultViewOptions: LocaleStorageOptions = {autoScroll: true, expandRunning: false};
-    const {autoScroll, expandRunning} = localUserSettings.getJsonObject('actions-view-options', defaultViewOptions);
+    const defaultViewOptions: LocaleStorageOptions = {autoScroll: true, expandRunning: false, actionsLogShowSeconds: false, actionsLogShowTimestamps: false};
+    const {autoScroll, expandRunning, actionsLogShowSeconds, actionsLogShowTimestamps} = localUserSettings.getJsonObject('actions-view-options', defaultViewOptions);
     return {
       // internal state
       loadingAbortController: null as AbortController | null,
@@ -146,11 +148,11 @@ export default defineComponent({
       menuVisible: false,
       isFullScreen: false,
       timeVisible: {
-        'log-time-stamp': false,
-        'log-time-seconds': false,
+        'log-time-stamp': actionsLogShowTimestamps,
+        'log-time-seconds': actionsLogShowSeconds,
       },
-      optionAlwaysAutoScroll: autoScroll ?? false,
-      optionAlwaysExpandRunning: expandRunning ?? false,
+      optionAlwaysAutoScroll: autoScroll,
+      optionAlwaysExpandRunning: expandRunning,
 
       // provided by backend
       run: {
@@ -253,7 +255,12 @@ export default defineComponent({
 
   methods: {
     saveLocaleStorageOptions() {
-      const opts: LocaleStorageOptions = {autoScroll: this.optionAlwaysAutoScroll, expandRunning: this.optionAlwaysExpandRunning};
+      const opts: LocaleStorageOptions = {
+        autoScroll: this.optionAlwaysAutoScroll,
+        expandRunning: this.optionAlwaysExpandRunning,
+        actionsLogShowSeconds: this.timeVisible['log-time-seconds'],
+        actionsLogShowTimestamps: this.timeVisible['log-time-stamp'],
+      };
       localUserSettings.setJsonObject('actions-view-options', opts);
     },
 
@@ -470,6 +477,7 @@ export default defineComponent({
       for (const el of this.elStepsContainer().querySelectorAll(`.log-time-${type}`)) {
         toggleElem(el, this.timeVisible[`log-time-${type}`]);
       }
+      this.saveLocaleStorageOptions();
     },
 
     toggleFullScreen() {
@@ -558,17 +566,17 @@ export default defineComponent({
               <li class="job-artifacts-item">
                 <template v-if="artifact.status !== 'expired'">
                   <a class="flex-text-inline" target="_blank" :href="run.link+'/artifacts/'+artifact.name">
-                    <SvgIcon name="octicon-file" class="text black"/>
+                    <SvgIcon name="octicon-file" class="tw-text-text"/>
                     <span class="gt-ellipsis">{{ artifact.name }}</span>
                   </a>
                   <a v-if="run.canDeleteArtifact" @click="deleteArtifact(artifact.name)">
-                    <SvgIcon name="octicon-trash" class="text black"/>
+                    <SvgIcon name="octicon-trash" class="tw-text-text"/>
                   </a>
                 </template>
-                <span v-else class="flex-text-inline text light grey">
+                <span v-else class="flex-text-inline tw-text-grey-light">
                   <SvgIcon name="octicon-file"/>
                   <span class="gt-ellipsis">{{ artifact.name }}</span>
-                  <span class="ui label text light grey tw-flex-shrink-0">{{ locale.artifactExpired }}</span>
+                  <span class="ui label tw-text-grey-light tw-flex-shrink-0">{{ locale.artifactExpired }}</span>
                 </span>
               </li>
             </template>

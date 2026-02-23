@@ -21,7 +21,7 @@ function showContentHistoryDetail(issueBaseUrl: string, commentId: string, histo
       ${svg('octicon-triangle-down', 14, 'dropdown icon')}
       <div class="menu">
         <!-- hide issue comment history delete button -->
-        <div class="item red text" style="display: none" data-option-item="delete">${i18nTextDeleteFromHistory}</div>
+        <div class="item tw-text-red" text" style="display: none" data-option-item="delete">${i18nTextDeleteFromHistory}</div>
       </div>
     </div>
   </div>
