@@ -3722,6 +3722,8 @@
   "actions.runs.workflow_run_count_1": "%d workflow run",
   "actions.runs.workflow_run_count_n": "%d workflow runs",
   "actions.runs.commit": "Commit",
+  "actions.runs.run_details": "Run Details",
+  "actions.runs.workflow_file": "Workflow file",
   "actions.runs.scheduled": "Scheduled",
   "actions.runs.pushed_by": "pushed by",
   "actions.runs.invalid_workflow_helper": "Workflow config file is invalid. Please check your config file: %s",
