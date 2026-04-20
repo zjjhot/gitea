@@ -52,7 +52,7 @@ require (
 	github.com/go-co-op/gocron/v2 v2.20.0
 	github.com/go-enry/go-enry/v2 v2.9.6
 	github.com/go-git/go-billy/v5 v5.8.0
-	github.com/go-git/go-git/v5 v5.17.2
+	github.com/go-git/go-git/v5 v5.18.0
 	github.com/go-ldap/ldap/v3 v3.4.13
 	github.com/go-redsync/redsync/v4 v4.16.0
 	github.com/go-sql-driver/mysql v1.9.3
@@ -129,7 +129,6 @@ require (
 
 require (
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
-	code.gitea.io/gitea-vet v0.2.3 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	filippo.io/edwards25519 v1.2.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2 // indirect
@@ -306,5 +305,3 @@ replace github.com/Azure/azure-sdk-for-go/sdk/azcore => github.com/Azure/azure-s
 replace github.com/Azure/azure-sdk-for-go/sdk/storage/azblob => github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.6.2 // v1.6.4+ uses API version unsupported by Azurite in CI
 
 replace github.com/microsoft/go-mssqldb => github.com/microsoft/go-mssqldb v1.9.7 // downgraded with Azure SDK
-
-tool code.gitea.io/gitea-vet
