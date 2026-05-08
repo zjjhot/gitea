@@ -676,7 +676,7 @@ func TestWebhook(ctx *context.Context) {
 			ID:            objectFormat.EmptyObjectID(),
 			Author:        ghost.NewGitSig(),
 			Committer:     ghost.NewGitSig(),
-			CommitMessage: "This is a fake commit",
+			CommitMessage: git.CommitMessage{MessageRaw: "This is a fake commit"},
 		}
 	}
 
@@ -684,7 +684,7 @@ func TestWebhook(ctx *context.Context) {
 
 	apiCommit := &api.PayloadCommit{
 		ID:      commit.ID.String(),
-		Message: commit.Message(),
+		Message: commit.MessageUTF8(),
 		URL:     ctx.Repo.Repository.HTMLURL() + "/commit/" + url.PathEscape(commit.ID.String()),
 		Author: &api.PayloadUser{
 			Name:  commit.Author.Name,
