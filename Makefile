@@ -320,7 +320,7 @@ lint-md-fix: node_modules ## lint markdown files and fix issues
 
 .PHONY: lint-pr-title
 lint-pr-title: ## lint PR title against Conventional Commits (set PR_TITLE=...)
-	@node ./tools/lint-pr-title.js
+	@node ./tools/lint-pr-title.ts
 
 .PHONY: lint-spell
 lint-spell: ## lint spelling
@@ -344,8 +344,9 @@ lint-editorconfig:
 	@$(GO) run $(EDITORCONFIG_CHECKER_PACKAGE) $(EDITORCONFIG_FILES)
 
 .PHONY: lint-actions
-lint-actions: ## lint action workflow files
-	$(GO) run $(ACTIONLINT_PACKAGE)
+lint-actions: .venv ## lint action workflow files
+	@$(GO) run $(ACTIONLINT_PACKAGE)
+	@uv run --frozen zizmor --quiet --min-confidence=medium .github
 
 .PHONY: lint-templates
 lint-templates: .venv node_modules ## lint template files
@@ -444,7 +445,11 @@ test-integration:
 	@# would flood output per passing test. testcache can't help these tests anyway —
 	@# they mutate the work directory, so cache inputs change between runs.
 	$(GO) test $(GOTEST_FLAGS) -tags '$(TAGS)' -c code.gitea.io/gitea/tests/integration -o ./test-integration-$(GITEA_TEST_DATABASE).test
-	./test-integration-$(GITEA_TEST_DATABASE).test
+	./tools/test-integration.sh ./test-integration-$(GITEA_TEST_DATABASE).test
+
+.PHONY: test-integration-compile
+test-integration-compile:
+	$(GO) test $(GOTEST_FLAGS) -tags '$(TAGS)' -c -o /dev/null code.gitea.io/gitea/tests/integration
 
 .PHONY: test-integration\#%
 test-integration\#%:
