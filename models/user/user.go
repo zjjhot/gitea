@@ -1497,3 +1497,9 @@ func DisabledFeaturesWithLoginType(user *User) *container.Set[string] {
 	}
 	return &setting.Admin.UserDisabledFeatures
 }
+// user customer funtions
+func (u *User) ThemeContainsPark() bool {
+	ars := []string{"plex", "aquamarine", "dark", "dracula", "hotline", "organizr", "space-gray", "hotpink", "onedark", "overseerr", "nord"}
+	//return contain(ars, u.Theme)
+	return util.SliceContainsString(ars, u.Theme)
+}
