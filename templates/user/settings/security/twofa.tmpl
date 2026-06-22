@@ -11,7 +11,7 @@
 	</form>
 	<form class="ui form form-fetch-action" action="{{AppSubUrl}}/user/settings/security/two_factor/disable" method="post">
 		<p>{{ctx.Locale.Tr "settings.twofa_disable_note"}}</p>
-		<button class="ui red button" data-modal-confirm="#disable-twofa">{{ctx.Locale.Tr "settings.twofa_disable"}}</button>
+		<button disabled class="ui red button" data-modal-confirm="#disable-twofa">{{ctx.Locale.Tr "settings.twofa_disable"}}</button>
 	</form>
 	{{else}}
 	{{/* The recovery tip is there as a means of encouraging a user to enroll */}}
