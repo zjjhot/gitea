@@ -14,9 +14,8 @@
 					</div>
 				</div>
 			</div>
-			<!--Hide wiki revision clone button-->
-			<div style="display: none">
-				{{template "repo/clone_panel" .}}
+			<div class="flex-text-block">
+				{{template "repo/clone_panel" dict "CloneButtonOriginLink" $.CloneButtonOriginLink}}
 			</div>
 		</div>
 		<h2 class="ui top header">{{ctx.Locale.Tr "repo.wiki.wiki_page_revisions"}}</h2>
