@@ -275,6 +275,170 @@
         }
       }
     },
+    "/admin/actions/variables": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "admin"
+        ],
+        "summary": "Get the instance-level variables list",
+        "operationId": "getAdminVariablesList",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "page number of results to return (1-based)",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "page size of results",
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/VariableList"
+          },
+          "default": {
+            "$ref": "#/responses/error"
+          }
+        }
+      }
+    },
+    "/admin/actions/variables/{variablename}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "admin"
+        ],
+        "summary": "Get an instance-level variable",
+        "operationId": "getAdminVariable",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "name of the variable",
+            "name": "variablename",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ActionVariable"
+          },
+          "default": {
+            "$ref": "#/responses/error"
+          }
+        }
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "admin"
+        ],
+        "summary": "Update an instance-level variable",
+        "operationId": "updateAdminVariable",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "name of the variable",
+            "name": "variablename",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateVariableOption"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "response when updating an instance-level variable"
+          },
+          "default": {
+            "$ref": "#/responses/error"
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "admin"
+        ],
+        "summary": "Create an instance-level variable",
+        "operationId": "createAdminVariable",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "name of the variable",
+            "name": "variablename",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateVariableOption"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successfully created the instance-level variable"
+          },
+          "default": {
+            "$ref": "#/responses/error"
+          }
+        }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "admin"
+        ],
+        "summary": "Delete an instance-level variable",
+        "operationId": "deleteAdminVariable",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "name of the variable",
+            "name": "variablename",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "response when deleting an instance-level variable"
+          },
+          "default": {
+            "$ref": "#/responses/error"
+          }
+        }
+      }
+    },
     "/admin/cron": {
       "get": {
         "produces": [
@@ -16817,6 +16981,9 @@
           "200": {
             "$ref": "#/responses/empty"
           },
+          "201": {
+            "$ref": "#/responses/empty"
+          },
           "default": {
             "$ref": "#/responses/error"
           }
@@ -25151,6 +25318,11 @@
           "format": "date-time",
           "x-go-name": "Created"
         },
+        "digest": {
+          "description": "Digest is the SHA-256 of the content as \"sha256:{hex}\", omitted when not recorded at upload",
+          "type": "string",
+          "x-go-name": "Digest"
+        },
         "download_count": {
           "description": "DownloadCount is the number of times the attachment has been downloaded",
           "type": "integer",
@@ -25763,13 +25935,14 @@
           "type": "string",
           "enum": [
             "pending",
+            "running",
             "success",
             "error",
             "failure",
             "warning",
             "skipped"
           ],
-          "x-go-enum-desc": "pending CommitStatusPending is for when the CommitStatus is Pending\nsuccess CommitStatusSuccess is for when the CommitStatus is Success\nerror CommitStatusError is for when the CommitStatus is Error\nfailure CommitStatusFailure is for when the CommitStatus is Failure\nwarning CommitStatusWarning is for when the CommitStatus is Warning\nskipped CommitStatusSkipped is for when CommitStatus is Skipped",
+          "x-go-enum-desc": "pending CommitStatusPending is for when the CommitStatus is Pending\nrunning CommitStatusRunning is for when the CommitStatus is Running\nsuccess CommitStatusSuccess is for when the CommitStatus is Success\nerror CommitStatusError is for when the CommitStatus is Error\nfailure CommitStatusFailure is for when the CommitStatus is Failure\nwarning CommitStatusWarning is for when the CommitStatus is Warning\nskipped CommitStatusSkipped is for when CommitStatus is Skipped",
           "x-go-name": "State"
         },
         "statuses": {
@@ -26017,17 +26190,18 @@
           "x-go-name": "ID"
         },
         "status": {
-          "description": "State represents the status state (pending, success, error, failure)",
+          "description": "State represents the status state (pending, running, success, error, failure, warning, skipped)",
           "type": "string",
           "enum": [
             "pending",
+            "running",
             "success",
             "error",
             "failure",
             "warning",
             "skipped"
           ],
-          "x-go-enum-desc": "pending CommitStatusPending is for when the CommitStatus is Pending\nsuccess CommitStatusSuccess is for when the CommitStatus is Success\nerror CommitStatusError is for when the CommitStatus is Error\nfailure CommitStatusFailure is for when the CommitStatus is Failure\nwarning CommitStatusWarning is for when the CommitStatus is Warning\nskipped CommitStatusSkipped is for when CommitStatus is Skipped",
+          "x-go-enum-desc": "pending CommitStatusPending is for when the CommitStatus is Pending\nrunning CommitStatusRunning is for when the CommitStatus is Running\nsuccess CommitStatusSuccess is for when the CommitStatus is Success\nerror CommitStatusError is for when the CommitStatus is Error\nfailure CommitStatusFailure is for when the CommitStatus is Failure\nwarning CommitStatusWarning is for when the CommitStatus is Warning\nskipped CommitStatusSkipped is for when CommitStatus is Skipped",
           "x-go-name": "State"
         },
         "target_url": {
@@ -27395,17 +27569,18 @@
           "x-go-name": "Description"
         },
         "state": {
-          "description": "State represents the status state to set (pending, success, error, failure)",
+          "description": "State represents the status state to set (pending, running, success, error, failure, warning, skipped)",
           "type": "string",
           "enum": [
             "pending",
+            "running",
             "success",
             "error",
             "failure",
             "warning",
             "skipped"
           ],
-          "x-go-enum-desc": "pending CommitStatusPending is for when the CommitStatus is Pending\nsuccess CommitStatusSuccess is for when the CommitStatus is Success\nerror CommitStatusError is for when the CommitStatus is Error\nfailure CommitStatusFailure is for when the CommitStatus is Failure\nwarning CommitStatusWarning is for when the CommitStatus is Warning\nskipped CommitStatusSkipped is for when CommitStatus is Skipped",
+          "x-go-enum-desc": "pending CommitStatusPending is for when the CommitStatus is Pending\nrunning CommitStatusRunning is for when the CommitStatus is Running\nsuccess CommitStatusSuccess is for when the CommitStatus is Success\nerror CommitStatusError is for when the CommitStatus is Error\nfailure CommitStatusFailure is for when the CommitStatus is Failure\nwarning CommitStatusWarning is for when the CommitStatus is Warning\nskipped CommitStatusSkipped is for when CommitStatus is Skipped",
           "x-go-name": "State"
         },
         "target_url": {
@@ -31643,6 +31818,9 @@
           },
           "x-go-name": "Assignees"
         },
+        "auto_merge": {
+          "$ref": "#/definitions/PullRequestAutoMerge"
+        },
         "base": {
           "$ref": "#/definitions/PRBranchInfo"
         },
@@ -31824,6 +32002,31 @@
         },
         "user": {
           "$ref": "#/definitions/User"
+        }
+      },
+      "x-go-package": "gitea.dev/modules/structs"
+    },
+    "PullRequestAutoMerge": {
+      "description": "PullRequestAutoMerge represents a pull request scheduled to auto merge when all checks succeed",
+      "type": "object",
+      "properties": {
+        "commit_message": {
+          "description": "The message of the resulting merge commit",
+          "type": "string",
+          "x-go-name": "CommitMessage"
+        },
+        "commit_title": {
+          "description": "The title of the resulting merge commit",
+          "type": "string",
+          "x-go-name": "CommitTitle"
+        },
+        "enabled_by": {
+          "$ref": "#/definitions/User"
+        },
+        "merge_method": {
+          "description": "The merge method that will be used, eg: \"merge\", \"rebase\", \"rebase-merge\", \"squash\", \"fast-forward-only\"",
+          "type": "string",
+          "x-go-name": "MergeMethod"
         }
       },
       "x-go-package": "gitea.dev/modules/structs"
